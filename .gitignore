@@ -1,0 +1,8 @@
+node_modules/
+.husky/_
+.env
+data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal.DS_Store
+.DS_Store

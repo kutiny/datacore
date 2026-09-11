@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{name}} · DataCore</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+  </head>
+  <body data-db-id="{{dbId}}">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img class="brand-mark" src="/favicon.png" />
+          <h1>DataCore</h1>
+        </a>
+        <div class="topbar-actions">
+          <button class="btn btn-sm" id="logout">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <a class="back-link" href="/">← All databases</a>
+
+      <section class="db-head">
+        <span class="engine-mark mark-lg engine-mark-{{engine}}">{{engineMark}}</span>
+        <div class="db-head-text">
+          <h1 class="db-title">{{name}}</h1>
+          <div class="db-head-badges">
+            <span class="badge engine-{{engine}}">{{engine}}</span>
+            <span class="badge status-{{status}}">{{statusLabel}}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="connection">
+        <div class="section-head">
+          <h2>Connection</h2>
+        </div>
+        <div class="conn-panel">
+          <div class="success-panel" id="conn-fields"></div>
+          <div class="conn-target">
+            <span class="success-label">Target</span>
+            <span class="success-value success-value-wide" id="conn-target" data-copy=""
+              >&mdash;</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="users">
+        <div class="section-head">
+          <h2>Users <span class="count" id="user-count">0</span></h2>
+          <button class="btn btn-primary btn-sm" id="open-add-user">Add user</button>
+        </div>
+        <div class="db-table-wrap">
+          <table class="db-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th class="actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="user-table"></tbody>
+          </table>
+        </div>
+        <div id="user-empty" class="empty-state" hidden>
+          <p>No users yet.</p>
+          <p class="empty-hint">Add one with the <strong>Add user</strong> button.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/detail.js"></script>
+  </body>
+</html>
