@@ -1,0 +1,71 @@
+name: Build and deploy
+run-name: '🚀 Deploy docker image'
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: The tag list to use (comma separated)
+        required: true
+
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+
+env:
+  PLATFORMS: linux/amd64,linux/arm64/v8
+
+jobs:
+  create-docker-image:
+    name: Create docker image
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository code
+        uses: https://github.com/actions/checkout@v4
+
+      - name: Define tags
+        id: define-tags
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            tags="${{ inputs.tags }}"
+          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
+            tags="${{ github.ref_name }}"
+          else
+            tags="${{ github.ref_name }}"
+          fi
+
+          {
+            echo 'tags<<EOF'
+            echo "$tags"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Docker login
+        uses: NebulaCore/actions/docker-login@main
+        with:
+          registry: ${{ vars.REGISTRY }}
+          username: ${{ vars.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: https://github.com/docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ env.PLATFORMS }}
+
+      - name: Set up Docker Buildx
+        uses: https://github.com/docker/setup-buildx-action@v3
+
+      - name: Build image
+        id: build-image
+        uses: NebulaCore/actions/docker-build-push@main
+        with:
+          registry: ${{ vars.REGISTRY }}
+          image_name: ${{ vars.IMAGE_NAME }}
+          tags: ${{ steps.define-tags.outputs.tags }}
+          platform: ${{ env.PLATFORMS }}
+
+      - name: Display output
+        run: |
+          echo ${{ steps.build-image.outputs.tags }}
