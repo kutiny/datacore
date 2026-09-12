@@ -64,7 +64,7 @@ jobs:
           registry: ${{ vars.REGISTRY }}
           image_name: ${{ vars.IMAGE_NAME }}
           tags: ${{ steps.define-tags.outputs.tags }}
-          platform: ${{ env.PLATFORMS }}
+          platforms: ${{ env.PLATFORMS }}
 
       - name: Display output
         run: |
