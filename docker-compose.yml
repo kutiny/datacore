@@ -23,9 +23,14 @@ services:
       MYSQL_PORT: ${MYSQL_PORT:-3306}
       MARIADB_PORT: ${MARIADB_PORT:-3306}
       MONGO_PORT: ${MONGO_PORT:-27017}
+      POSTGRES_SUPERUSER: ${POSTGRES_SUPERUSER:-postgres}
       POSTGRES_SUPERPASSWORD: ${POSTGRES_SUPERPASSWORD:-datacore_pass}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-datacore_pass}
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-datacore_pass}
+      MYSQL_SUPERUSER: ${MYSQL_SUPERUSER:-root}
+      MYSQL_SUPERPASSWORD: ${MYSQL_SUPERPASSWORD:-datacore_pass}
+      MARIADB_SUPERUSER: ${MARIADB_SUPERUSER:-root}
+      MARIADB_SUPERPASSWORD: ${MARIADB_SUPERPASSWORD:-datacore_pass}
+      MONGO_SUPERUSER: ${MONGO_SUPERUSER:-}
+      MONGO_SUPERPASSWORD: ${MONGO_SUPERPASSWORD:-}
     depends_on:
       - postgres
       - mysql
@@ -52,7 +57,7 @@ services:
     ports:
       - '${MYSQL_PORT:-3306}:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-datacore_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-${MYSQL_SUPERPASSWORD:-datacore_pass}}
     volumes:
       - mysql-data:/var/lib/mysql
 
@@ -63,7 +68,7 @@ services:
     ports:
       - '${MARIADB_PORT:-3306}:3306'
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-datacore_pass}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-${MARIADB_SUPERPASSWORD:-datacore_pass}}
     volumes:
       - mariadb-data:/var/lib/mysql
 

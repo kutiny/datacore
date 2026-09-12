@@ -30,8 +30,10 @@ const ENGINE_DEFS = [
     connPortDefault: 3306,
     hostPortVar: 'MYSQL_PORT',
     hostPortDefault: 3306,
+    superUserVar: 'MYSQL_SUPERUSER',
     superUserDefault: 'root',
-    superPasswordVar: 'MYSQL_ROOT_PASSWORD',
+    superPasswordVar: 'MYSQL_SUPERPASSWORD',
+    superPasswordLegacyVar: 'MYSQL_ROOT_PASSWORD',
     superPasswordDefault: 'datacore_pass',
   },
   {
@@ -42,8 +44,10 @@ const ENGINE_DEFS = [
     connPortDefault: 3306,
     hostPortVar: 'MARIADB_PORT',
     hostPortDefault: 3306,
+    superUserVar: 'MARIADB_SUPERUSER',
     superUserDefault: 'root',
-    superPasswordVar: 'MARIADB_ROOT_PASSWORD',
+    superPasswordVar: 'MARIADB_SUPERPASSWORD',
+    superPasswordLegacyVar: 'MARIADB_ROOT_PASSWORD',
     superPasswordDefault: 'datacore_pass',
   },
   {
@@ -54,6 +58,8 @@ const ENGINE_DEFS = [
     connPortDefault: 27017,
     hostPortVar: 'MONGO_PORT',
     hostPortDefault: 27017,
+    superUserVar: 'MONGO_SUPERUSER',
+    superPasswordVar: 'MONGO_SUPERPASSWORD',
   },
 ];
 
@@ -68,11 +74,15 @@ for (const def of ENGINE_DEFS) {
     port: Number(process.env[def.connPortVar] || def.connPortDefault),
     hostPort: Number(process.env[def.hostPortVar] || def.hostPortDefault),
   };
-  if (def.superUserDefault) {
-    engine.superUser = process.env[def.superUserVar] || def.superUserDefault;
+  if (def.superUserVar || def.superUserDefault) {
+    engine.superUser = process.env[def.superUserVar] || def.superUserDefault || '';
   }
-  if (def.superPasswordVar) {
-    engine.superPassword = process.env[def.superPasswordVar] || def.superPasswordDefault;
+  if (def.superPasswordVar || def.superPasswordDefault) {
+    engine.superPassword =
+      process.env[def.superPasswordVar] ||
+      process.env[def.superPasswordLegacyVar] ||
+      def.superPasswordDefault ||
+      '';
   }
   engines[def.key] = engine;
 }

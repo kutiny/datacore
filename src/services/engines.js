@@ -45,7 +45,11 @@ export async function connect(engine) {
       return conn;
     }
     case 'mongo': {
-      const client = new MongoClient(`mongodb://${cfg.host}:${cfg.port}`, {
+      const auth =
+        cfg.superUser && cfg.superPassword
+          ? `${encodeURIComponent(cfg.superUser)}:${encodeURIComponent(cfg.superPassword)}@`
+          : '';
+      const client = new MongoClient(`mongodb://${auth}${cfg.host}:${cfg.port}/?authSource=admin`, {
         serverSelectionTimeoutMS: 6000,
       });
       await client.connect();
