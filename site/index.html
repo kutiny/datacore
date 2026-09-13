@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataCore — One database engine. Unlimited databases.</title>
+    <meta
+      name="description"
+      content="DataCore is a lightweight, self-hosted panel that runs a single instance of PostgreSQL, MySQL, MariaDB or MongoDB and provisions unlimited isolated databases with per-database users — configured entirely by environment variables."
+    />
+    <meta name="theme-color" content="#0b0e14" />
+    <meta property="og:title" content="DataCore — One engine. Unlimited databases." />
+    <meta
+      property="og:description"
+      content="Self-hosted database panel. Run one instance of each engine and provision as many isolated databases as you need. Configured by .env — no Docker socket."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav" id="top">
+      <nav class="wrap nav-inner" aria-label="Primary">
+        <a class="brand" href="#top" aria-label="DataCore home">
+          <span class="brand-mark" aria-hidden="true"><span>&gt;_</span></span>
+          <span class="brand-word">DataCore</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#engines">Engines</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <a class="btn btn-primary" href="#install">
+            Get DataCore
+            <span aria-hidden="true" class="arrow">&rarr;</span>
+          </a>
+          <button
+            class="nav-burger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span class="sr-only">Menu</span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#engines">Engines</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a class="btn btn-primary btn-block" href="#install">Get DataCore</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ── Hero ─────────────────────────────────────────── -->
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow pill">
+            <span class="pulse" aria-hidden="true"></span>
+            Simple to self-host &middot; v1.0 &middot; open source (ISC)
+          </p>
+          <h1 id="hero-title">
+            One engine.
+            <span class="grad">Unlimited databases.</span>
+          </h1>
+          <p class="lede">
+            DataCore is a lightweight, self-hosted panel that runs a single instance of
+            <strong>PostgreSQL</strong>, <strong>MySQL</strong>, <strong>MariaDB</strong> or
+            <strong>MongoDB</strong> &mdash; then provisions as many isolated databases with
+            per-database users as you need. Everything is configured by environment variables.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="#">
+              Get DataCore
+              <span aria-hidden="true" class="arrow">&rarr;</span>
+            </a>
+            <a class="btn btn-ghost btn-lg" href="#install">Read the quick start</a>
+          </div>
+          <ul class="hero-checks">
+            <li>No Docker socket</li>
+            <li>No container daemon access</li>
+            <li>Env-driven config</li>
+          </ul>
+        </div>
+
+        <div class="hero-stage" aria-label="DataCore terminal demo">
+          <div
+            class="term"
+            role="img"
+            aria-label="A terminal showing docker compose startup and database deployment output"
+          >
+            <div class="term-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title">&gt;_ datacore &mdash; localhost:3737</span>
+            </div>
+            <div class="term-body">
+              <p class="tl" style="--i: 0">
+                <span class="tc-prompt">$</span>
+                <span class="tc-cmd">docker compose up -d</span>
+              </p>
+              <p class="tl" style="--i: 1">
+                <span class="tc-ok">&#10003;</span>
+                <span class="tc-dim">panel ready</span
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:3737
+              </p>
+              <p class="tl eng pg" style="--i: 2">
+                <span class="tc-ok">&#10003;</span>
+                <span class="tc-name">postgresql</span>&nbsp;<span class="tc-dim">5432</span
+                >&nbsp;&nbsp;<span class="tc-state">running</span>
+              </p>
+              <p class="tl eng my" style="--i: 3">
+                <span class="tc-ok">&#10003;</span> <span class="tc-name">mysql</span>&nbsp;<span
+                  class="tc-dim"
+                  >3306</span
+                >&nbsp;&nbsp;&nbsp;<span class="tc-state">running</span>
+              </p>
+              <p class="tl eng ma" style="--i: 4">
+                <span class="tc-ok">&#10003;</span> <span class="tc-name">mariadb</span>&nbsp;<span
+                  class="tc-dim"
+                  >3308</span
+                >&nbsp;&nbsp;<span class="tc-state">running</span>
+              </p>
+              <p class="tl eng mo" style="--i: 5">
+                <span class="tc-ok">&#10003;</span> <span class="tc-name">mongodb</span>&nbsp;<span
+                  class="tc-dim"
+                  >27017</span
+                >&nbsp;&nbsp;<span class="tc-state">running</span>
+              </p>
+              <p class="tl" style="--i: 6">&nbsp;</p>
+              <p class="tl cursor-line" style="--i: 12">
+                <span class="tc-prompt">$</span><span class="cursor-bar"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Features ─────────────────────────────────────── -->
+      <section class="section features wrap" id="features" aria-labelledby="features-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; features</p>
+          <h2 id="features-title">Built to be boringly easy to run</h2>
+          <p class="lede">
+            A panel, not a platform. One process, real drivers, and everything you need fits in a
+            single
+            <code>.env</code>.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 3l9 5-9 5-9-5 9-5z" />
+                <path d="M3 13l9 5 9-5" />
+                <path d="M3 17l9 5 9-5" />
+              </svg>
+            </span>
+            <h3>Run once, deploy many</h3>
+            <p>
+              Start a single instance of each engine. Deploy unlimited logical databases from the
+              panel, each isolated with its own credentials &mdash; no container per database.
+            </p>
+          </article>
+
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="8" cy="16" r="4" />
+                <path d="M8 4v8M12 6h4M4 6h4" />
+                <path d="M8 14v-3h9l2-2v8l-1 1h-4" />
+              </svg>
+            </span>
+            <h3>Per-database users</h3>
+            <p>
+              Add or revoke users scoped to a single database from the UI. No SSH into containers,
+              no hand-written SQL, no shared admin credentials leaking around.
+            </p>
+          </article>
+
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 8h7M15 8h5M4 16h3M11 16h9" />
+                <circle cx="13" cy="8" r="2" />
+                <circle cx="9" cy="16" r="2" />
+              </svg>
+            </span>
+            <h3>Configured by <code>.env</code></h3>
+            <p>
+              Hosts, ports, superusers and the panel password all come from environment variables.
+              No admin console, no settings database, no account to create.
+            </p>
+          </article>
+
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </span>
+            <h3>No Docker socket</h3>
+            <p>
+              The panel talks to engines over TCP with real drivers &mdash; pg, mysql2, mongodb,
+              mariadb. It never mounts the Docker socket and can&rsquo;t touch your host.
+            </p>
+          </article>
+
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 12h4l2-7 4 14 2-7h6" />
+              </svg>
+            </span>
+            <h3>Engine health at a glance</h3>
+            <p>
+              Live status cards show <em>running</em>, <em>stopped</em> or <em>error</em> for every
+              enabled engine the moment it&rsquo;s configured.
+            </p>
+          </article>
+
+          <article class="card feature-card reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 17l6-6-6-6" />
+                <path d="M12 19h8" />
+              </svg>
+            </span>
+            <h3>Credentials on day one</h3>
+            <p>
+              Deploy a database and get a working connection string back immediately. Passwords are
+              shown once, then masked with a reveal toggle.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── Engines ──────────────────────────────────────── -->
+      <section class="section engines wrap" id="engines" aria-labelledby="engines-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; engines</p>
+          <h2 id="engines-title">One panel, four engines</h2>
+          <p class="lede">
+            An engine appears in the dashboard as soon as its <code>*_HOST</code> is set. Pick what
+            you already run &mdash; or enable them all.
+          </p>
+        </div>
+
+        <div class="engine-grid">
+          <article class="engine-card reveal">
+            <div class="engine-top">
+              <span class="engine-mark pg">Pg</span>
+              <span class="engine-name">PostgreSQL</span>
+              <span class="badge running" aria-label="running"
+                ><i aria-hidden="true"></i>running</span
+              >
+            </div>
+            <p>The advanced relational workhorse. JSONB, extensions, the ecosystem leader.</p>
+            <span class="engine-port">port <code>5432</code></span>
+          </article>
+
+          <article class="engine-card reveal">
+            <div class="engine-top">
+              <span class="engine-mark my">My</span>
+              <span class="engine-name">MySQL</span>
+              <span class="badge running" aria-label="running"
+                ><i aria-hidden="true"></i>running</span
+              >
+            </div>
+            <p>The ubiquitous relational default with a decade of production weight behind it.</p>
+            <span class="engine-port">port <code>3306</code></span>
+          </article>
+
+          <article class="engine-card reveal">
+            <div class="engine-top">
+              <span class="engine-mark ma">Ma</span>
+              <span class="engine-name">MariaDB</span>
+              <span class="badge running" aria-label="running"
+                ><i aria-hidden="true"></i>running</span
+              >
+            </div>
+            <p>
+              The community drop-in fork &mdash; same roots, open governance, and fast releases.
+            </p>
+            <span class="engine-port">port <code>3306</code></span>
+          </article>
+
+          <article class="engine-card reveal">
+            <div class="engine-top">
+              <span class="engine-mark mo">Mo</span>
+              <span class="engine-name">MongoDB</span>
+              <span class="badge running" aria-label="running"
+                ><i aria-hidden="true"></i>running</span
+              >
+            </div>
+            <p>The document store for flexible schemas when relational structure is overkill.</p>
+            <span class="engine-port">port <code>27017</code></span>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── How it works ─────────────────────────────────── -->
+      <section class="section how wrap" id="how" aria-labelledby="how-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; how it works</p>
+          <h2 id="how-title">From zero to a new database in minutes</h2>
+          <p class="lede">
+            No daemon, no sidecar, no platform APIs. Just a panel that knows its SQL.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step-num">01</span>
+            <h3>Compose up</h3>
+            <p>
+              <code>docker compose up -d</code> runs the panel and every engine in a single project.
+              Or run the panel on the host.
+            </p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num">02</span>
+            <h3>Configure once</h3>
+            <p>
+              Set <code>DATACORE_PASSWORD</code> plus per-engine <code>*_HOST</code> /
+              <code>*_SUPERUSER</code> / <code>*_SUPERPASSWORD</code>. Done.
+            </p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num">03</span>
+            <h3>Deploy</h3>
+            <p>
+              Pick an engine and a name. DataCore provisions the database, creates the user and
+              returns the credentials exactly once.
+            </p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num">04</span>
+            <h3>Manage</h3>
+            <p>
+              Open a database&rsquo;s detail page for its connection string. Add or revoke
+              per-database users any time.
+            </p>
+          </li>
+        </ol>
+
+        <div
+          class="diagram reveal"
+          aria-label="Architecture: the DataCore panel connects to each engine over TCP"
+        >
+          <div class="diag-panel">
+            <span class="diag-mark" aria-hidden="true">&gt;_</span>
+            <span class="diag-label">DataCore panel</span>
+            <span class="diag-sub">Node + Express &middot; :3737</span>
+          </div>
+          <div class="diag-arrow" aria-hidden="true">
+            <span>TCP &middot; pg / mysql2 / mongodb / mariadb</span>
+          </div>
+          <div class="diag-engines">
+            <span class="diag-engine pg">PostgreSQL</span>
+            <span class="diag-engine my">MySQL</span>
+            <span class="diag-engine ma">MariaDB</span>
+            <span class="diag-engine mo">MongoDB</span>
+          </div>
+        </div>
+
+        <p class="diagram-note">
+          The panel never touches a Docker socket &mdash; every engine action happens over the wire
+          with real database drivers.
+        </p>
+      </section>
+
+      <!-- ── Install ──────────────────────────────────────── -->
+      <section class="section install wrap" id="install" aria-labelledby="install-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; quick start</p>
+          <h2 id="install-title">Self-hosted in one command</h2>
+          <p class="lede">Clone it, set two variables, and it&rsquo;s up.</p>
+        </div>
+
+        <div class="install-grid">
+          <figure class="term code-term reveal">
+            <div class="term-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title">&gt;_ deploy datacore</span>
+            </div>
+            <pre class="term-body code-body">
+                <code>
+                    <p><span class="tc-prompt">$</span>git clone https://github.com/kutiny/datacore.git</p>
+                    <p><span class="tc-prompt">$</span><span class="tc-cmd">cd datacore</span></p>
+                    <p><span class="tc-prompt">$</span><span class="tc-cmd">cp .env.example .env</span>  <span class="tc-comment"># set configurations</span></p>
+                    <p><span class="tc-prompt">$</span><span class="tc-cmd">docker compose up -d</span>  <span class="tc-comment"># panel + engines</span></p>
+                </code>
+            </pre>
+          </figure>
+
+          <div class="install-side">
+            <ul class="install-list">
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Dashboard at</strong> <code>http://localhost:3737</code> &mdash; log in
+                  with your <code>DATACORE_PASSWORD</code>.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Prefer the host?</strong> Run <code>pnpm start</code> with
+                  <code>*_HOST=localhost</code> &mdash; no containers required.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Connect remote engines too</strong> &mdash; any host reachable over TCP,
+                  not just local ones.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>An engine stays hidden</strong> until its <code>*_HOST</code> is set
+                  &mdash; enable only what you run.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FAQ ──────────────────────────────────────────── -->
+      <section class="section faq wrap" id="faq" aria-labelledby="faq-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; faq</p>
+          <h2 id="faq-title">Questions, answered</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item reveal">
+            <summary>
+              How is this different from running one container per database?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              Each engine is a single server process. Databases are logical units with their own
+              users and privileges &mdash; not separate containers. Fewer moving parts, far less
+              RAM, and no orchestrator stitching containers together.
+            </p>
+          </details>
+
+          <details class="faq-item reveal">
+            <summary>
+              Does it need the Docker socket or root access?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              No. DataCore is a plain Node process that connects to engines over TCP with normal
+              database drivers. It never mounts the Docker socket and can&rsquo;t manage host
+              containers.
+            </p>
+          </details>
+
+          <details class="faq-item reveal">
+            <summary>
+              Which engines are supported?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              PostgreSQL, MySQL, MariaDB and MongoDB. Each one appears in the panel as soon as its
+              <code>*_HOST</code> environment variable is set.
+            </p>
+          </details>
+
+          <details class="faq-item reveal">
+            <summary>
+              Do I still host the engines myself?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              Yes. DataCore manages databases and users inside engines you already run &mdash;
+              locally, in Docker Compose, or on a remote host. It provisions databases, not servers.
+            </p>
+          </details>
+
+          <details class="faq-item reveal">
+            <summary>
+              How does security work?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              Credentials live in environment variables, sessions are signed, superuser passwords
+              stay out of your clients&rsquo; hands, and connection passwords are validated to keep
+              out metacharacters. You self-host, so nothing leaves your machine. Review it before
+              you trust it in production.
+            </p>
+          </details>
+
+          <details class="faq-item reveal">
+            <summary>
+              Is it free?
+              <span class="faq-marker" aria-hidden="true"></span>
+            </summary>
+            <p>
+              Yes &mdash; open source under the ISC license. Self-host it anywhere a Node process
+              runs.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="#top" aria-label="DataCore home">
+            <span class="brand-mark" aria-hidden="true"><span>&gt;_</span></span>
+            <span class="brand-word">DataCore</span>
+          </a>
+          <p>
+            Self-hosted database management without the machinery. One engine, unlimited databases.
+          </p>
+        </div>
+
+        <nav class="footer-col" aria-label="Product">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#engines">Engines</a></li>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#install">Quick start</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Resources">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Source code</a></li>
+            <li><a href="#">License</a></li>
+            <li><a href="#">Docs</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-note">
+          <h3>Runs anywhere</h3>
+          <p>
+            A single Node process plus your engines &mdash; a VPS, a home lab, a Docker project, or
+            a bare-metal box.
+          </p>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <p>&copy; <span id="year">2026</span> DataCore &middot; ISC License</p>
+        <p class="footer-mono">Built for self-hosters &middot; no accounts, no telemetry</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

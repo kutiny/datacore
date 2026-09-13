@@ -1,0 +1,22 @@
+{
+  "name": "datacore-landing",
+  "version": "1.0.0",
+  "description": "Landing page for DataCore — self-hosted database management panel",
+  "main": "index.js",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.4.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.4.1",
+  "type": "module"
+}
