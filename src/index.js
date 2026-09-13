@@ -6,7 +6,6 @@ import { config } from './config.js';
 import { requireAuth } from './auth.js';
 import { store } from './store/db.js';
 import { getEngineStatuses } from './services/engines.js';
-import { render, escapeHtml } from './views/render.js';
 import authRoutes from './routes/auth.js';
 import databasesRoutes from './routes/databases.js';
 import enginesRoutes from './routes/engines.js';
@@ -14,6 +13,8 @@ import enginesRoutes from './routes/engines.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -39,20 +40,39 @@ const ENGINE_MARKS = {
   mongo: 'Mo',
 };
 
+function engineView(statuses = {}) {
+  return Object.keys(config.engines).map((key) => {
+    const cfg = config.engines[key];
+    const st = statuses[key] || {};
+    const status = st.status || 'unknown';
+    return {
+      key,
+      label: cfg.label,
+      mark: ENGINE_MARKS[key] || key.slice(0, 1),
+      host: cfg.host,
+      hostPort: cfg.hostPort,
+      port: st.hostPort || cfg.hostPort,
+      status,
+      statusLabel: STATUS_LABELS[status] || status,
+    };
+  });
+}
+
+function databaseView(db) {
+  return {
+    id: db.id,
+    engine: db.engine,
+    engineMark: ENGINE_MARKS[db.engine] || db.engine.slice(0, 1),
+    name: db.name,
+    status: db.status,
+    statusLabel: STATUS_LABELS[db.status] || db.status,
+    userCount: store.listUsers(db.id).length,
+  };
+}
+
 app.get('/login', (req, res) => {
   if (req.session && req.session.authenticated) return res.redirect('/');
-  const engineChips = Object.keys(config.engines)
-    .map((k) => {
-      const e = config.engines[k];
-      return `
-        <div class="auth-engine">
-          <span class="engine-mark engine-mark-${k}">${ENGINE_MARKS[k] || k.slice(0, 1)}</span>
-          <span class="auth-engine-name">${e.label}</span>
-          <span class="auth-engine-port">${e.host}:${e.hostPort}</span>
-        </div>`;
-    })
-    .join('');
-  return res.send(render('login.html', { engineChips }));
+  return res.render('login', { engines: engineView() });
 });
 
 app.get('/', requireAuth, async (_, res, next) => {
@@ -63,59 +83,17 @@ app.get('/', requireAuth, async (_, res, next) => {
       statuses = await getEngineStatuses();
     } catch {}
 
-    const engineCards = Object.keys(config.engines)
-      .map((engine) => {
-        const st = statuses[engine] || {};
-        const status = st.status || 'unknown';
-        const label = STATUS_LABELS[status] || status;
-        return `
-          <div class="card engine" data-engine="${engine}">
-            <div class="engine-head">
-              <div class="engine-id">
-                <span class="engine-mark engine-mark-${engine}">${ENGINE_MARKS[engine] || engine.slice(0, 1)}</span>
-                <div>
-                  <div class="engine-name">${engine}</div>
-                  <div class="engine-port">${config.engines[engine]?.host ?? ''}:${st.hostPort || config.engines[engine]?.hostPort || ''}</div>
-                </div>
-              </div>
-              <span class="badge status-${status}">${label}</span>
-            </div>
-          </div>`;
-      })
-      .join('');
-
-    const dbRows = dbs
-      .map((db) => {
-        const users = store.listUsers(db.id);
-        const label = STATUS_LABELS[db.status] || db.status;
-        return `
-          <tr data-id="${db.id}">
-            <td><span class="badge engine-${db.engine}">${db.engine}</span></td>
-            <td><a class="db-link" href="/databases/${db.id}">${escapeHtml(db.name)}</a></td>
-            <td><span class="badge status-${db.status}">${label}</span></td>
-            <td>${users.length}</td>
-            <td class="actions">
-              <a class="btn btn-sm" href="/databases/${db.id}">Manage</a>
-              <button class="btn btn-sm btn-danger" data-action="delete" data-id="${db.id}">Delete</button>
-            </td>
-          </tr>`;
-      })
-      .join('');
-
-    res.send(
-      render('dashboard.html', {
-        engineCards,
-        dbRows,
-        dbCount: dbs.length,
-        emptyState: dbs.length ? 'hidden' : '',
-        enginesJson: JSON.stringify(
-          Object.keys(config.engines).map((k) => ({
-            value: k,
-            label: config.engines[k].label,
-          })),
-        ),
-      }),
-    );
+    return res.render('dashboard', {
+      engines: engineView(statuses),
+      dbs: dbs.map(databaseView),
+      dbCount: dbs.length,
+      enginesJson: JSON.stringify(
+        Object.keys(config.engines).map((k) => ({
+          value: k,
+          label: config.engines[k].label,
+        })),
+      ),
+    });
   } catch (err) {
     next(err);
   }
@@ -125,17 +103,7 @@ app.get('/databases/:id', requireAuth, (req, res, next) => {
   try {
     const db = store.getDatabase(req.params.id);
     if (!db) return res.status(404).send('Database not found');
-    return res.send(
-      render('detail.html', {
-        dbId: db.id,
-        engine: db.engine,
-        engineMark: ENGINE_MARKS[db.engine] || db.engine.slice(0, 1),
-        name: db.name,
-        status: db.status,
-        statusLabel: STATUS_LABELS[db.status] || db.status,
-        port: config.engines[db.engine]?.hostPort ?? '',
-      }),
-    );
+    return res.render('detail', databaseView(db));
   } catch (err) {
     next(err);
   }

@@ -1,0 +1,16 @@
+.git
+.github/
+.husky
+.opencode
+data/
+docs/
+node_modules/
+site/
+.DS_Store
+.dockerignore
+.env
+.env*
+.prettierignore
+.prettierrc.json
+Dockerfile
+docker-compose.yml

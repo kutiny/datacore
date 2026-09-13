@@ -1,0 +1,45 @@
+extends layout
+
+include partials/engine-chips
+
+block title
+  title Sign in · DataCore
+
+block header
+
+block content
+  .authi-form
+    .auth-split
+      aside.auth-brand
+        .auth-brand-head
+          span.auth-mark >_
+          span.auth-wordmark DataCore
+            span.auth-cursor
+        .auth-console
+          p.auth-console-label configured engines
+          .auth-engine-list
+            +engineChips(engines)
+        p.auth-foot database management panel
+
+      section.auth-form-wrap
+        form#login-form.auth-form(novalidate)
+          h1 Sign in
+          p.auth-hint The panel is password protected.
+          .form-group
+            .password-field
+              input#auth-password(
+                name="password",
+                type="password",
+                placeholder="Enter panel password",
+                autocomplete="current-password",
+                required,
+              )
+              button#toggle-password.password-toggle(
+                type="button",
+                aria-label="Show password",
+                aria-pressed="false",
+              )
+                svg(width="14", height="14", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2", stroke-linecap="round", stroke-linejoin="round")
+                  path(d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z")
+                  circle(cx="12", cy="12", r="3")
+          button.btn.btn-primary.auth-submit(type="submit") Unlock

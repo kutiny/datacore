@@ -1,0 +1,48 @@
+extends layout
+
+block title
+  title #{name} · DataCore
+
+block content
+  main
+    a.back-link(href="/") ← All databases
+
+    section.db-head
+      span.engine-mark.mark-lg(class=`engine-mark-${engine}`) #{engineMark}
+      .db-head-text
+        h1.db-title #{name}
+        .db-head-badges
+          span.badge(class=`engine-${engine}`) #{engine}
+          span.badge(class=`status-${status}`) #{statusLabel}
+
+    section.connection
+      .section-head
+        h2 Connection
+      .conn-panel
+        #conn-fields.success-panel
+        .conn-target
+          span.success-label Target
+          span#conn-target.success-value.success-value-wide(data-copy="") —
+
+    section.users
+      .section-head
+        h2 Users
+          span#user-count.count 0
+        button#open-add-user.btn.btn-primary.btn-sm Add user
+      .db-table-wrap
+        table.db-table
+          thead
+            tr
+              th Username
+              th Password
+              th.actions Actions
+          tbody#user-table
+      #user-empty.empty-state(hidden)
+        p No users yet.
+        p.empty-hint
+          | Add one with the
+          strong  Add user
+          |  button.
+
+block scripts
+  script(src="/detail.js")

@@ -17,7 +17,7 @@ export async function createUser(record, username, password) {
   });
 }
 
-export async function deleteUser(record, username) {
+export async function deleteUser(_, username) {
   await withConnection(ENGINE, (client) => psql(client, `DROP USER IF EXISTS "${username}"`));
 }
 

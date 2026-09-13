@@ -4,7 +4,7 @@ import { getEngineStatuses } from '../services/engines.js';
 
 const router = Router();
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth, async (_, res) => {
   try {
     res.json(await getEngineStatuses());
   } catch (err) {

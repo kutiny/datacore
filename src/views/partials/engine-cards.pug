@@ -1,0 +1,10 @@
+mixin engineCards(engines)
+  each engine in engines
+    .card.engine(data-engine=engine.key)
+      .engine-head
+        .engine-id
+          span.engine-mark(class=`engine-mark-${engine.key}`) #{engine.mark}
+          div
+            .engine-name #{engine.key}
+            .engine-port #{engine.host}:#{engine.port}
+        span.badge(class=`status-${engine.status}`) #{engine.statusLabel}

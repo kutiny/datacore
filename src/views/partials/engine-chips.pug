@@ -1,0 +1,6 @@
+mixin engineChips(engines)
+  each engine in engines
+    .auth-engine
+      span.engine-mark(class=`engine-mark-${engine.key}`) #{engine.mark}
+      span.auth-engine-name #{engine.label}
+      span.auth-engine-port #{engine.host}:#{engine.hostPort}

@@ -21,7 +21,7 @@ export function makeSqlService(engine) {
         await run(conn, 'FLUSH PRIVILEGES');
       });
     },
-    async deleteUser(record, username) {
+    async deleteUser(_, username) {
       await withConnection(engine, async (conn) => {
         await run(conn, `DROP USER IF EXISTS '${username}'@'%'`);
         await run(conn, 'FLUSH PRIVILEGES');

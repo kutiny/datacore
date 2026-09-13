@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    block title
+    link(rel="stylesheet", href="/style.css")
+    link(rel="icon", type="image/png", href="/favicon.png")
+  body(class=bodyClass, data-db-id=dbId)
+    block header
+      include partials/topbar
+    block content
+    block scripts
+      script(src="/app.js")

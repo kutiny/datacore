@@ -1,0 +1,13 @@
+mixin dbRows(dbs)
+  each db in dbs
+    tr(data-id=db.id)
+      td
+        span.badge(class=`engine-${db.engine}`) #{db.engine}
+      td
+        a.db-link(href=`/databases/${db.id}`) #{db.name}
+      td
+        span.badge(class=`status-${db.status}`) #{db.statusLabel}
+      td #{db.userCount}
+      td.actions
+        a.btn.btn-sm(href=`/databases/${db.id}`) Manage
+        button.btn.btn-sm.btn-danger(type="button", data-action="delete", data-id=db.id) Delete

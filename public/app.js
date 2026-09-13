@@ -95,6 +95,20 @@ if (loginForm) {
   });
 }
 
+/* ── Login: show/hide password ── */
+
+const passwordInput = $('#auth-password');
+const passwordToggle = $('#toggle-password');
+if (passwordToggle && passwordInput) {
+  passwordToggle.addEventListener('click', () => {
+    const reveal = passwordInput.type === 'password';
+    passwordInput.type = reveal ? 'text' : 'password';
+    passwordToggle.innerHTML = reveal ? EYE_CLOSED : EYE_OPEN;
+    passwordToggle.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+    passwordToggle.setAttribute('aria-pressed', String(reveal));
+  });
+}
+
 /* ── Logout ── */
 
 const logoutBtn = $('#logout');

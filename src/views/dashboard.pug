@@ -1,0 +1,40 @@
+extends layout
+
+include partials/engine-cards
+include partials/db-rows
+
+block title
+  title DataCore
+
+block content
+  main
+    section.engines
+      h2 Engines
+      .engine-grid
+        +engineCards(engines)
+
+    section.databases
+      .section-head
+        h2 Databases
+          span.count #{dbCount}
+        button#open-create.btn.btn-primary Deploy database
+      .db-table-wrap
+        table.db-table
+          thead
+            tr
+              th Engine
+              th Name
+              th Status
+              th Users
+              th.actions Actions
+          tbody#db-table
+            +dbRows(dbs)
+      #db-empty.empty-state(hidden=dbCount > 0)
+        p No databases yet.
+        p.empty-hint
+          | Deploy your first one with the
+          strong  Deploy database
+          |  button.
+
+  script#engine-data(type="application/json").
+    !{enginesJson}
