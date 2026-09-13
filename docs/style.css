@@ -1140,6 +1140,69 @@ code {
   font-size: 0.82em;
 }
 
+.install-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  width: fit-content;
+  margin: -16px auto 40px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.install-tab {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-3);
+  background: none;
+  border: none;
+  border-radius: calc(var(--radius-lg) - 5px);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.install-tab:hover {
+  color: var(--text);
+}
+
+.install-tab.is-active {
+  color: var(--text);
+  background: var(--accent-muted);
+}
+
+.install-grid[hidden] {
+  display: none;
+}
+
+/* ── Compose examples ─────────────────────────────────── */
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.examples-grid .code-body code {
+  font-size: 0.8rem;
+}
+
+.examples-note {
+  margin-top: 24px;
+  color: var(--text-3);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.examples-note code {
+  font-size: 0.82em;
+}
+
 /* ── FAQ ───────────────────────────────────────────────── */
 .faq-list {
   display: flex;
@@ -1377,6 +1440,7 @@ code {
   .engine-grid,
   .steps,
   .install-grid,
+  .examples-grid,
   .footer-grid {
     grid-template-columns: 1fr;
   }

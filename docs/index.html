@@ -30,9 +30,8 @@
 
         <ul class="nav-links">
           <li><a href="#features">Features</a></li>
-          <li><a href="#engines">Engines</a></li>
-          <li><a href="#how">How it works</a></li>
           <li><a href="#install">Install</a></li>
+          <li><a href="#examples">Examples</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
 
@@ -58,9 +57,8 @@
       <div class="mobile-menu" id="mobile-menu" hidden>
         <ul>
           <li><a href="#features">Features</a></li>
-          <li><a href="#engines">Engines</a></li>
-          <li><a href="#how">How it works</a></li>
           <li><a href="#install">Install</a></li>
+          <li><a href="#examples">Examples</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a class="btn btn-primary btn-block" href="#install">Get DataCore</a></li>
         </ul>
@@ -434,10 +432,39 @@
         <div class="section-head">
           <p class="eyebrow">&gt; quick start</p>
           <h2 id="install-title">Self-hosted in one command</h2>
-          <p class="lede">Clone it, set two variables, and it&rsquo;s up.</p>
+          <p class="lede">Clone the repo and compose up &mdash; or pull the pre-built image. Both take seconds.</p>
         </div>
 
-        <div class="install-grid">
+        <div class="install-tabs" role="tablist" aria-label="Install method">
+          <button
+            class="install-tab is-active"
+            id="install-tab-image"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="install-panel-image"
+          >
+            Pre-built image
+          </button>
+          <button
+            class="install-tab"
+            id="install-tab-source"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="install-panel-source"
+          >
+            Build from source
+          </button>
+        </div>
+
+        <div
+          class="install-grid"
+          id="install-panel-source"
+          role="tabpanel"
+          aria-labelledby="install-tab-source"
+          hidden
+        >
           <figure class="term code-term reveal">
             <div class="term-bar">
               <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -486,6 +513,201 @@
             </ul>
           </div>
         </div>
+
+        <div
+          class="install-grid"
+          id="install-panel-image"
+          role="tabpanel"
+          aria-labelledby="install-tab-image"
+        >
+          <figure class="term code-term reveal">
+            <div class="term-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title">&gt;_ image &mdash; ghcr.io/kutiny/datacore</span>
+            </div>
+            <pre class="term-body code-body">
+                <code>
+                    <p><span class="tc-prompt">$</span>mkdir datacore &amp;&amp; cd datacore</p>
+                    <p><span class="tc-prompt">$</span><span class="tc-cmd">cat &gt; docker-compose.yaml &lt;&lt;'EOF'</span></p>
+                    <p><span class="tc-comment"># docker-compose.yaml</span></p>
+                    <p><span class="tc-code2">services:</span></p>
+                    <p><span class="tc-code2">  datacore:</span></p>
+                    <p>    image: <span class="tc-code2">ghcr.io/kutiny/datacore:latest</span></p>
+                    <p>    container_name: datacore</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    ports:</p>
+                    <p>      - "3737:3737"</p>
+                    <p>    volumes:</p>
+                    <p>      - datacore-data:/app/data</p>
+                    <p>    environment:</p>
+                    <p>      DATACORE_PASSWORD: change-me</p>
+                    <p>      SESSION_SECRET: change-me-too</p>
+                    <p><span class="tc-comment">      # add *_HOST / *_SUPERPASSWORD per engine</span></p>
+                    <p><span class="tc-cmd">EOF</span></p>
+                    <p><span class="tc-prompt">$</span><span class="tc-cmd">docker compose up -d</span>  <span class="tc-comment"># pulls latest</span></p>
+                </code>
+            </pre>
+          </figure>
+
+          <div class="install-side">
+            <ul class="install-list">
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Use multi-arch docker image</strong> &mdash; (amd64 &amp; arm64)
+                  <code>ghcr.io/kutiny/datacore:latest</code>.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Dashboard at</strong> <code>http://localhost:3737</code> &mdash; log in
+                  with your <code>DATACORE_PASSWORD</code>.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>State in a named volume</strong> &mdash; databases &amp; settings survive
+                  restarts and image updates.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Engines are yours</strong> &mdash; point <code>*_HOST</code> /
+                  <code>*_SUPERPASSWORD</code> at PostgreSQL, MySQL, MariaDB or MongoDB, local or
+                  remote.
+                </p>
+              </li>
+              <li class="reveal">
+                <span class="install-check" aria-hidden="true">&#10003;</span>
+                <p>
+                  <strong>Update anytime</strong> with
+                  <code>docker compose pull &amp;&amp; docker compose up -d</code>.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Examples ─────────────────────────────────────── -->
+      <section class="section examples wrap" id="examples" aria-labelledby="examples-title">
+        <div class="section-head">
+          <p class="eyebrow">&gt; examples</p>
+          <h2 id="examples-title">Compose files that just work</h2>
+          <p class="lede">
+            Copy one of these into an empty directory and run
+            <code>docker compose up -d</code>. Only the engines you configure ever show up.
+          </p>
+        </div>
+
+        <div class="examples-grid">
+          <figure class="term code-term reveal">
+            <div class="term-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title">&gt;_ mysql only</span>
+            </div>
+            <pre class="term-body code-body">
+                <code>
+                    <p><span class="tc-comment"># docker-compose.yaml</span></p>
+                    <p><span class="tc-code2">services:</span></p>
+                    <p><span class="tc-code2">  datacore:</span></p>
+                    <p>    image: ghcr.io/kutiny/datacore:latest</p>
+                    <p>    container_name: datacore</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    ports:</p>
+                    <p>      - "3737:3737"</p>
+                    <p>    environment:</p>
+                    <p>      DATACORE_PASSWORD: change-me</p>
+                    <p>      MYSQL_HOST: mysql</p>
+                    <p>      MYSQL_SUPERUSER: root</p>
+                    <p>      MYSQL_SUPERPASSWORD: change-me-too</p>
+                    <p>    depends_on:</p>
+                    <p>      - mysql</p>
+                    <p><span class="tc-code2">  mysql:</span></p>
+                    <p>    image: mysql:8</p>
+                    <p>    container_name: datacore-mysql</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    environment:</p>
+                    <p>      MYSQL_ROOT_PASSWORD: change-me-too</p>
+                    <p>    volumes:</p>
+                    <p>      - mysql-data:/var/lib/mysql</p>
+                    <p><span class="tc-code2">volumes:</span></p>
+                    <p>  mysql-data:</p>
+                </code>
+            </pre>
+          </figure>
+
+          <figure class="term code-term reveal">
+            <div class="term-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title">&gt;_ postgres + mariadb + mongo</span>
+            </div>
+            <pre class="term-body code-body">
+                <code>
+                    <p><span class="tc-comment"># docker-compose.yaml</span></p>
+                    <p><span class="tc-code2">services:</span></p>
+                    <p><span class="tc-code2">  datacore:</span></p>
+                    <p>    image: ghcr.io/kutiny/datacore:latest</p>
+                    <p>    container_name: datacore</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    ports:</p>
+                    <p>      - "3737:3737"</p>
+                    <p>    environment:</p>
+                    <p>      DATACORE_PASSWORD: change-me</p>
+                    <p>      POSTGRES_HOST: postgres</p>
+                    <p>      POSTGRES_SUPERUSER: postgres</p>
+                    <p>      POSTGRES_SUPERPASSWORD: change-me-pg</p>
+                    <p>      MARIADB_HOST: mariadb</p>
+                    <p>      MARIADB_SUPERUSER: root</p>
+                    <p>      MARIADB_SUPERPASSWORD: change-me-maria</p>
+                    <p>      MONGO_HOST: mongo</p>
+                    <p>    depends_on:</p>
+                    <p>      - postgres</p>
+                    <p>      - mariadb</p>
+                    <p>      - mongo</p>
+                    <p><span class="tc-code2">  postgres:</span></p>
+                    <p>    image: postgres:16-alpine</p>
+                    <p>    container_name: datacore-postgres</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    environment:</p>
+                    <p>      POSTGRES_USER: postgres</p>
+                    <p>      POSTGRES_PASSWORD: change-me-pg</p>
+                    <p>      POSTGRES_DB: postgres</p>
+                    <p>    volumes:</p>
+                    <p>      - postgres-data:/var/lib/postgresql/data</p>
+                    <p><span class="tc-code2">  mariadb:</span></p>
+                    <p>    image: mariadb:11</p>
+                    <p>    container_name: datacore-mariadb</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    environment:</p>
+                    <p>      MARIADB_ROOT_PASSWORD: change-me-maria</p>
+                    <p>    volumes:</p>
+                    <p>      - mariadb-data:/var/lib/mysql</p>
+                    <p><span class="tc-code2">  mongo:</span></p>
+                    <p>    image: mongo:7</p>
+                    <p>    container_name: datacore-mongo</p>
+                    <p>    restart: unless-stopped</p>
+                    <p>    volumes:</p>
+                    <p>      - mongo-data:/data/db</p>
+                    <p><span class="tc-code2">volumes:</span></p>
+                    <p>  postgres-data:</p>
+                    <p>  mariadb-data:</p>
+                    <p>  mongo-data:</p>
+                </code>
+            </pre>
+          </figure>
+        </div>
+
+        <p class="examples-note">
+          Note: MongoDB runs without authentication here &mdash; the panel connects over the
+          internal network. To enable auth, set <code>MONGO_SUPERUSER</code> /
+          <code>MONGO_SUPERPASSWORD</code>, and the matching
+          <code>MONGO_INITDB_ROOT_USERNAME</code> / <code>MONGO_INITDB_ROOT_PASSWORD</code> on the
+          mongo service.
+        </p>
       </section>
 
       <!-- ── FAQ ──────────────────────────────────────────── -->
@@ -588,6 +810,7 @@
             <li><a href="#engines">Engines</a></li>
             <li><a href="#how">How it works</a></li>
             <li><a href="#install">Quick start</a></li>
+            <li><a href="#examples">Examples</a></li>
           </ul>
         </nav>
 
