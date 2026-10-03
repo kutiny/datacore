@@ -103,7 +103,7 @@ app.get('/databases/:id', requireAuth, (req, res, next) => {
   try {
     const db = store.getDatabase(req.params.id);
     if (!db) return res.status(404).send('Database not found');
-    return res.render('detail', databaseView(db));
+    return res.render('detail', { ...databaseView(db), dbId: db.id });
   } catch (err) {
     next(err);
   }
