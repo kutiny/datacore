@@ -1156,6 +1156,79 @@ details summary {
   font-weight: 500;
 }
 
+/* ── Tags ── */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.786rem;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.tag-remove {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+  border-radius: 3px;
+  line-height: 0;
+}
+
+.tag-remove:hover {
+  color: var(--danger);
+}
+
+.tag-none {
+  color: var(--text-3);
+  font-size: 0.857rem;
+}
+
+.tags-cell {
+  max-width: 260px;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.tag-add {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tag-input {
+  flex: 1;
+  max-width: 220px;
+  font-family: var(--font-mono);
+  font-size: 0.857rem;
+}
+
+.form-hint {
+  color: var(--text-3);
+  font-size: 0.786rem;
+  margin-top: 5px;
+}
+
+.form-hint code {
+  font-family: var(--font-mono);
+  font-size: 0.786rem;
+  color: var(--text-2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   dialog[open] {
     animation: none;

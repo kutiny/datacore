@@ -154,6 +154,11 @@ if (openCreate) {
                    title="lowercase letters, digits, underscores; max 32 chars"
                    autocomplete="off" required />
           </div>
+          <div class="form-group">
+            <label class="form-label" for="dc-tags">Tags</label>
+            <input name="tags" id="dc-tags" placeholder="production, billing" autocomplete="off" />
+            <p class="form-hint">Comma separated, up to 8. Letters, digits, <code>-</code> and <code>_</code>.</p>
+          </div>
           <details>
             <summary>Optional credentials</summary>
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
@@ -181,8 +186,10 @@ if (openCreate) {
       const form = e.target;
       const submitBtn = form.querySelector('[type="submit"]');
       const data = { engine: form.engine.value, name: form.name.value };
+      const tags = form.tags.value.trim();
       const username = form.username.value.trim();
       const password = form.password.value;
+      if (tags) data.tags = tags;
       if (username) data.username = username;
       if (password) data.password = password;
 

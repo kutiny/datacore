@@ -5,6 +5,8 @@ mixin dbRows(dbs)
         span.badge(class=`engine-${db.engine}`) #{db.engine}
       td
         a.db-link(href=`/databases/${db.id}`) #{db.name}
+      td.tags-cell
+        +tagList(db.tags)
       td
         span.badge(class=`status-${db.status}`) #{db.statusLabel}
       td #{db.userCount}

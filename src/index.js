@@ -67,6 +67,7 @@ function databaseView(db) {
     status: db.status,
     statusLabel: STATUS_LABELS[db.status] || db.status,
     userCount: store.listUsers(db.id).length,
+    tags: db.tags || [],
   };
 }
 

@@ -1,5 +1,7 @@
 extends layout
 
+include partials/tags
+
 block title
   title #{name} · DataCore
 
@@ -14,6 +16,17 @@ block content
         .db-head-badges
           span.badge(class=`engine-${engine}`) #{engine}
           span.badge(class=`status-${status}`) #{statusLabel}
+
+    section.tags-section
+      .section-head
+        h2 Tags
+        span#tag-count.count 0
+      .tag-editor#tag-editor(data-tags=tags ? tags.join(',') : '')
+        #tag-list.tag-list
+          +tagList(tags)
+        form#tag-form.tag-add(autocomplete="off")
+          input#tag-input.tag-input(name="tag", placeholder="Add a tag", maxlength="24", aria-label="New tag")
+          button.btn.btn-sm.btn-primary(type="submit") Add tag
 
     section.connection
       .section-head

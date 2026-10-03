@@ -15,6 +15,8 @@ const ENGINES = Object.keys(config.engines);
 const NAME_RE = /^[a-z][a-z0-9_]{0,31}$/;
 const USER_RE = /^[a-zA-Z0-9_]{1,32}$/;
 const PASS_RE = /^[a-zA-Z0-9!@#$%^&*()_+\-.,?~]{8,64}$/;
+const TAG_RE = /^[a-z0-9][a-z0-9_-]{0,23}$/;
+const MAX_TAGS = 8;
 const TEMPLATES = {
   postgres: 'postgres://USER:PASS@HOST:PORT/NAME',
   mysql: 'mysql://USER:PASS@HOST:PORT/NAME',
@@ -50,6 +52,19 @@ function validCredentials(username, password) {
   return null;
 }
 
+function parseTags(input) {
+  const raw = Array.isArray(input) ? input : String(input ?? '').split(',');
+  const tags = [];
+  for (const item of raw) {
+    const tag = String(item).trim().toLowerCase();
+    if (!tag) continue;
+    if (!TAG_RE.test(tag)) return { error: `tag '${tag}' must match /^[a-z0-9][a-z0-9_-]{0,23}$/` };
+    if (!tags.includes(tag)) tags.push(tag);
+  }
+  if (tags.length > MAX_TAGS) return { error: `at most ${MAX_TAGS} tags per database` };
+  return { tags };
+}
+
 router.get('/', requireAuth, (req, res) => {
   res.json(store.listDatabases().map(toApi));
 });
@@ -67,7 +82,7 @@ router.get('/:id', requireAuth, (req, res) => {
 });
 
 router.post('/', requireAuth, async (req, res) => {
-  const { engine, name, username, password } = req.body || {};
+  const { engine, name, username, password, tags } = req.body || {};
   if (!ENGINES.includes(engine)) {
     return res.status(400).json({ error: `engine must be one of ${ENGINES.join(', ')}` });
   }
@@ -76,12 +91,14 @@ router.post('/', requireAuth, async (req, res) => {
   }
   const credentialError = validCredentials(username, password);
   if (credentialError) return res.status(400).json({ error: credentialError });
+  const tagResult = parseTags(tags);
+  if (tagResult.error) return res.status(400).json({ error: tagResult.error });
   if (store.findDatabase(engine, name)) {
     return res.status(409).json({ error: `${engine} database '${name}' already exists` });
   }
 
   const id = crypto.randomUUID();
-  const record = { id, engine, name };
+  const record = { id, engine, name, tags: tagResult.tags };
   store.createDatabase(record);
 
   try {
@@ -110,6 +127,15 @@ router.post('/', requireAuth, async (req, res) => {
     } catch {}
     return res.status(500).json({ error: err.message });
   }
+});
+
+router.patch('/:id', requireAuth, (req, res) => {
+  const row = store.getDatabase(req.params.id);
+  if (!row) return res.status(404).json({ error: 'Not found' });
+  const tagResult = parseTags((req.body || {}).tags);
+  if (tagResult.error) return res.status(400).json({ error: tagResult.error });
+  const updated = store.setTags(row.id, tagResult.tags);
+  return res.json({ database: toApi(updated) });
 });
 
 router.delete('/:id', requireAuth, async (req, res) => {

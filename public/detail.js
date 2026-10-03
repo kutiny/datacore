@@ -255,6 +255,63 @@ function deleteUser(uid, username) {
   });
 }
 
+/* tags */
+const X_CLOSE =
+  '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+const MAX_TAGS = 8;
+
+function renderTags() {
+  const list = $('#tag-list');
+  if (!list) return;
+  const tags = db.tags || [];
+  list.innerHTML = tags.length
+    ? tags
+        .map(
+          (t) => `
+      <span class="tag">
+        ${esc(t)}
+        <button class="tag-remove" type="button" data-del-tag="${esc(t)}" aria-label="Remove tag ${esc(t)}">${X_CLOSE}</button>
+      </span>`,
+        )
+        .join('')
+    : '<span class="tag-none">No tags yet.</span>';
+  $('#tag-count').textContent = tags.length;
+}
+
+async function saveTags(next) {
+  try {
+    const res = await api(`/api/databases/${dbId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ tags: next }),
+    });
+    db.tags = res.database.tags;
+    renderTags();
+  } catch (err) {
+    toast(err.message, 'error');
+  }
+}
+
+const tagForm = $('#tag-form');
+if (tagForm) {
+  tagForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = $('#tag-input');
+    const value = input.value.trim().toLowerCase();
+    if (!value) return;
+    const tags = db.tags || [];
+    if (tags.includes(value)) return toast(`"${value}" is already added`, 'error');
+    if (tags.length >= MAX_TAGS) return toast(`at most ${MAX_TAGS} tags per database`, 'error');
+    input.value = '';
+    await saveTags([...tags, value]);
+  });
+}
+
+$('#tag-list').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-del-tag]');
+  if (btn) saveTags((db.tags || []).filter((t) => t !== btn.dataset.delTag));
+});
+
 /* boot */
 $('#logout').addEventListener('click', async () => {
   await api('/api/logout', { method: 'POST' });
@@ -276,6 +333,7 @@ $('#user-table').addEventListener('click', (e) => {
   try {
     db = await api(`/api/databases/${dbId}`);
     renderConnection();
+    renderTags();
     renderUsers();
   } catch (err) {
     if (err.message === 'request failed (401)' || err.message.includes('logged in')) {

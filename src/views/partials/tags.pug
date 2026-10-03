@@ -1,0 +1,6 @@
+mixin tagList(tags)
+  if tags && tags.length
+    each tag in tags
+      span.tag= tag
+  else
+    span.tag-none —

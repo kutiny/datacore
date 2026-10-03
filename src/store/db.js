@@ -26,8 +26,19 @@ db.exec(`
   );
 `);
 
+if (!db.pragma('table_info(databases)').some((c) => c.name === 'tags')) {
+  db.exec("ALTER TABLE databases ADD COLUMN tags TEXT NOT NULL DEFAULT ''");
+}
+
 const mapDb = (r) =>
-  r && { id: r.id, engine: r.engine, name: r.name, status: r.status, createdAt: r.created_at };
+  r && {
+    id: r.id,
+    engine: r.engine,
+    name: r.name,
+    status: r.status,
+    createdAt: r.created_at,
+    tags: r.tags ? r.tags.split(',').filter(Boolean) : [],
+  };
 const mapUser = (r) =>
   r && {
     id: r.id,
@@ -42,9 +53,10 @@ const stmts = {
   getDb: db.prepare('SELECT * FROM databases WHERE id = ?'),
   findDb: db.prepare('SELECT * FROM databases WHERE engine = ? AND name = ?'),
   createDb: db.prepare(
-    'INSERT INTO databases (id, engine, name, status, created_at) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO databases (id, engine, name, status, created_at, tags) VALUES (?, ?, ?, ?, ?, ?)',
   ),
   setStatus: db.prepare('UPDATE databases SET status = ? WHERE id = ?'),
+  setTags: db.prepare('UPDATE databases SET tags = ? WHERE id = ?'),
   deleteDb: db.prepare('DELETE FROM databases WHERE id = ?'),
   listUsers: db.prepare('SELECT * FROM users WHERE db_id = ?'),
   getUser: db.prepare('SELECT * FROM users WHERE id = ? AND db_id = ?'),
@@ -66,12 +78,16 @@ export const store = {
   findDatabase(engine, name) {
     return mapDb(stmts.findDb.get(engine, name));
   },
-  createDatabase({ id, engine, name }) {
-    stmts.createDb.run(id, engine, name, 'provisioning', Date.now());
+  createDatabase({ id, engine, name, tags = [] }) {
+    stmts.createDb.run(id, engine, name, 'provisioning', Date.now(), tags.join(','));
     return this.getDatabase(id);
   },
   setStatus(id, status) {
     stmts.setStatus.run(status, id);
+  },
+  setTags(id, tags) {
+    stmts.setTags.run(tags.join(','), id);
+    return this.getDatabase(id);
   },
   deleteDatabase(id) {
     stmts.deleteDb.run(id);
