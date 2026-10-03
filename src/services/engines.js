@@ -17,7 +17,7 @@ const CLOSE = {
   mongo: (client) => client.close(),
 };
 
-export async function connect(engine) {
+export async function connect(engine, options = {}) {
   const cfg = config.engines[engine];
 
   switch (engine) {
@@ -27,7 +27,7 @@ export async function connect(engine) {
         port: cfg.port,
         user: cfg.superUser,
         password: cfg.superPassword,
-        database: 'postgres',
+        database: options.database || 'postgres',
         connectionTimeoutMillis: 6000,
       });
       await client.connect();
@@ -60,8 +60,8 @@ export async function connect(engine) {
   }
 }
 
-export async function withConnection(engine, fn) {
-  const client = await connect(engine);
+export async function withConnection(engine, fn, options) {
+  const client = await connect(engine, options);
   try {
     return await fn(client);
   } finally {
